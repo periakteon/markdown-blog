@@ -30,7 +30,7 @@ const articleSchema = new mongoose.Schema({
   },
 });
 
-// herhangi bir ekleme, düzeltme, silme vb. gibi durumlardan önce çalışacak fonksiyon ekliyoruz (middleware)
+// herhangi bir ekleme, düzeltme, silme vb. gibi durumlardan önce (pre) çalışacak ara fonksiyon ekliyoruz (middleware)
 articleSchema.pre("validate", function (next) {
   // başlık var mı diye kontrol ediyoruz
   if (this.title) {

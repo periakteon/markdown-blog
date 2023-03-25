@@ -43,12 +43,19 @@ router.post("/", async (req, res) => {
   } catch (error) {
     if (error.code === 11000 && error.keyPattern && error.keyPattern.slug) {
       // Send a 400 Bad Request status code and the duplicate key error message to the client
-      res.status(400).send({ error: 'A post with this title already exists.' });
+      res.status(400).send({ error: "Aynı başlığa sahip başka bir yazı var." });
     } else {
       // For other errors, send a 500 Internal Server Error status code and the error message to the client
       res.status(500).send({ error: error.message });
     }
   }
+});
+
+// "delete" metodu kullanmak için method-override kullanmamız gerekiyor, bunu da index.ejs'te ayrıca belirtiyoruz
+// şöyle: <form action="/articles/<%= article.id %>?_method=DELETE" method="POST"></form>
+router.delete("/:id", async (req, res) => {
+  await Article.findByIdAndDelete(req.params.id);
+  res.redirect("/");
 });
 
 module.exports = router;
