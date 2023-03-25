@@ -3,7 +3,7 @@ const Article = require("../models/articleModel");
 const router = express.Router();
 
 // "/articles" istekleri, yani bir nevi articles'ın anasayfası
-router.get("/new", (req, res) => {
+router.get("/new", async (req, res) => {
   res.render("articles/new");
 });
 
