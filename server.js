@@ -36,6 +36,16 @@ app.set("view engine", "ejs");
 // yani diyoruz ki: "/articles"a gelen her şeyi al, sonrasında işi articleRouter'a bırak
 app.use("/articles", articleRouter);
 
+/*
+
+the difference is express.json() is a body parser for post request except html post form and express.urlencoded({extended: false}) is a body parser for html post form.
+
+express.json() is a built express middleware that convert request body to JSON.
+express.urlencoded() just like express.json() converts request body to JSON, it also carries out some other functionalities like: converting form-data to JSON etc.
+*/
+
+app.use(express.urlencoded({ extended: false }));
+
 // "/" adresine istek geldiğinde views klasörünün içerisindeki "index"i render et
 app.get("/", (req, res) => {
   // anasayfada çıkacak olan yazıları nesne olarak engine'e göndermek için

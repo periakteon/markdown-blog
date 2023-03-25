@@ -8,8 +8,16 @@ router.get("/new", (req, res) => {
 });
 
 // yeni yazı eklemek için ".../articles" adresine gelen POST isteklerini yönetiyoruz
-router.post("/", (req, res) => {
-  const article = new Article({});
+router.post("/", async (req, res) => {
+  const article = new Article({
+    title: req.body.title,
+    description: req.body.description,
+    markdown: req.body.markdown,
+  });
+  try {
+    article = await article.save();
+    res.redirect(`/articles/${article.id}`);
+  } catch (error) {}
 });
 
 module.exports = router;
