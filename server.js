@@ -1,4 +1,4 @@
-// .env oluşturmayı unutma
+// .env oluşturmayı unutma (PORT:3000)
 
 const express = require("express");
 const dotenv = require("dotenv").config();
@@ -23,5 +23,6 @@ app.listen(process.env.PORT, () => {
 
 // "/" adresine istek geldiğinde views klasörünün içerisindeki "index"i render et
 app.get("/", (req, res) => {
-  res.render("index");
+  // "index.ejs" içerisindeki "<%= text %>" nesnesini bize gönderir
+  res.render("index", { text: "engine denemesi" });
 });
