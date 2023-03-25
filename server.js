@@ -41,6 +41,15 @@ app.get("/", async (req, res) => {
   res.render("articles/index", { articles: articles });
 });
 
+app.get("/articles", async (req, res) => {
+  //veritabanından tüm yazıları bulup, en yeni olanlar en üstte görünecek şekilde alıyoruz
+  const articles = await Article.find().sort({ createdAt: "descending" });
+
+  // /articles'a gelen istekleri template engine'inin içerisindeki articles.ejs olarak belirledik
+  // tüm yazıları almak için forEach kullanacağız, bu nedenle yukarıdaki articles dizisini "articles" olarak aktarıyoruz: ejs ile kullanmak için
+  res.render("articles/articles", { articles: articles });
+});
+
 // "/articles"a gelen her şeyi articles.js router'ı üzerinden kontrol edeceğiz
 // yani diyoruz ki: "/articles"a gelen her şeyi al, sonrasında işi articlesRouter'a bırak
 app.use("/articles", articlesRouter);

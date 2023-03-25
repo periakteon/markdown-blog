@@ -3,8 +3,16 @@ const Article = require("../models/articleModel");
 const router = express.Router();
 
 // "/articles" istekleri, yani bir nevi articles'ın anasayfası
-router.get("/new", async (req, res) => {
-  res.render("articles/new");
+router.get("/new", (req, res) => {
+
+  // bunu yapmamızın sebebi yalnızca şema oluşturup içeriğini boş bırakmak, aksi takdirde edit için kullandığımız pre-populate işlemini yapamıyorum
+  const article = new Article();
+  res.render("articles/new", { article: article });
+});
+
+router.get("/edit/:id", async (req, res) => {
+  const article = await Article.findById(req.params.id);
+  res.render("articles/edit", {article: article});
 });
 
 router.get("/:slug", async (req, res) => {
