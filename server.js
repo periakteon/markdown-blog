@@ -23,6 +23,19 @@ app.listen(process.env.PORT, () => {
 
 // "/" adresine istek geldiğinde views klasörünün içerisindeki "index"i render et
 app.get("/", (req, res) => {
-  // "index.ejs" içerisindeki "<%= text %>" nesnesini bize gönderir
-  res.render("index", { text: "engine denemesi" });
+  // anasayfada çıkacak olan yazıları nesne olarak engine'e göndermek için
+  const articles = [
+    {
+      title: "Test Article",
+      date: Date.now(),
+      description: "test description",
+    },
+    {
+      title: "Test Article 2",
+      date: Date.now(),
+      description: "test description 2",
+    },
+  ];
+  // "index.ejs" içerisindeki "<%= articles %>" nesnesini "articles" değişkeni olarak belirledik
+  res.render("index", { articles: articles });
 });
