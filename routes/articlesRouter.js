@@ -1,10 +1,11 @@
 const express = require("express");
+const slugify = require("slugify");
 const Article = require("../models/articleModel");
 const router = express.Router();
 
+
 // "/articles" istekleri, yani bir nevi articles'ın anasayfası
 router.get("/new", (req, res) => {
-
   // bunu yapmamızın sebebi yalnızca şema oluşturup içeriğini boş bırakmak, aksi takdirde edit için kullandığımız pre-populate işlemini yapamıyorum
   const article = new Article();
   res.render("articles/new", { article: article });
@@ -12,7 +13,7 @@ router.get("/new", (req, res) => {
 
 router.get("/edit/:id", async (req, res) => {
   const article = await Article.findById(req.params.id);
-  res.render("articles/edit", {article: article});
+  res.render("articles/edit", { article: article });
 });
 
 router.get("/:slug", async (req, res) => {
@@ -64,6 +65,31 @@ router.post("/", async (req, res) => {
 router.delete("/:id", async (req, res) => {
   await Article.findByIdAndDelete(req.params.id);
   res.redirect("/");
+});
+
+// edit isteğini ekliyoruz
+router.put("/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const title = req.body.title;
+    const description = req.body.description;
+    const markdown = req.body.markdown;
+    const slug = slugify(title, { lower: true, strict: true });
+    await Article.findByIdAndUpdate(
+      id,
+      {
+        title: title,
+        description: description,
+        markdown: markdown,
+        slug: slug,
+      },
+      { new: true } // to return the updated document
+    );
+    res.redirect(`/articles/${slug}`);
+  } catch (err) {
+    console.error("Yazı güncellenirken bir hata oluştu:", err);
+    res.status(500).send("Internal server error.");
+  }
 });
 
 module.exports = router;

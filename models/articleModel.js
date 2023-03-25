@@ -48,7 +48,7 @@ articleSchema.pre("validate", function (next) {
   }
 
   if (this.markdown) {
-    this.sanitizedHtml = dompurify.sanitize(marked(this.markdown));
+    this.sanitizedHtml = dompurify.sanitize(marked.parse(this.markdown));
   }
 
   // middleware işleminin tamamlandığını, kalan işlemlere devam etmesi gerektiğini söylüyoruz
