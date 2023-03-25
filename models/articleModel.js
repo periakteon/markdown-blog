@@ -1,4 +1,8 @@
 const mongoose = require("mongoose");
+//markdown için
+const marked = require("marked");
+// URL'leri id ile değil başlığa göre getirmek için (xxx.com/articles/1285asdua5 yerine xxx.com/articles/yazi-basligi)
+const slugify = require("slugify");
 
 const articleSchema = new mongoose.Schema({
   title: {
@@ -19,6 +23,23 @@ const articleSchema = new mongoose.Schema({
     // ama "() => Date.now()" yerine direkt "default: Date.now" da yapabilirdik (parantez olmadan)
     default: () => Date.now(),
   },
+  slug: {
+    type: String,
+    required: true,
+    unique: true,
+  },
 });
+
+// herhangi bir ekleme, düzeltme, silme vb. gibi durumlardan önce çalışacak fonksiyon ekliyoruz (middleware)
+articleSchema.pre("validate", function (next) {
+  // başlık var mı diye kontrol ediyoruz
+  if (this.title) {
+    // başlık varsa, başlık küçük harfle slug olsun ve boşluk vb. görürsen kafana göre işaret et (-) gibi (strict bu işe yarıyor)
+    this.slug = slugify(this.title, {lower: true, strict: true})
+  }
+  
+  // middleware işleminin tamamlandığını, kalan işlemlere devam etmesi gerektiğini söylüyoruz
+  next();
+})
 
 module.exports = mongoose.model("Article", articleSchema);

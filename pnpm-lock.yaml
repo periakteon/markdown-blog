@@ -4,14 +4,18 @@ specifiers:
   dotenv: ^16.0.3
   ejs: ^3.1.9
   express: ^4.18.2
+  marked: ^4.3.0
   mongoose: ^7.0.3
   nodemon: ^2.0.22
+  slugify: ^1.6.5
 
 dependencies:
   dotenv: 16.0.3
   ejs: 3.1.9
   express: 4.18.2
+  marked: 4.3.0
   mongoose: 7.0.3
+  slugify: 1.6.5
 
 devDependencies:
   nodemon: 2.0.22
@@ -467,6 +471,12 @@ packages:
     engines: {node: '>=12.0.0'}
     dev: false
 
+  /marked/4.3.0:
+    resolution: {integrity: sha512-PRsaiG84bK+AMvxziE/lCFss8juXjNaWzVbN5tXAm4XjeaS9NAHhop+PjQxz2A9h8Q4M/xGmzP8vqNwy6JeK0A==}
+    engines: {node: '>= 12'}
+    hasBin: true
+    dev: false
+
   /media-typer/0.3.0:
     resolution: {integrity: sha512-dq+qelQ9akHpcOl/gUVRTxVIOkAJ1wR3QAvb4RsVjS8oVoFjDGTc679wJYmUmknUF5HwMLOgb5O+a3KxfWapPQ==}
     engines: {node: '>= 0.6'}
@@ -775,6 +785,11 @@ packages:
     dependencies:
       semver: 7.0.0
     dev: true
+
+  /slugify/1.6.5:
+    resolution: {integrity: sha512-8mo9bslnBO3tr5PEVFzMPIWwWnipGS0xVbYf65zxDqfNwmzYn1LpiKNrR6DlClusuvo+hDHd1zKpmfAe83NQSQ==}
+    engines: {node: '>=8.0.0'}
+    dev: false
 
   /smart-buffer/4.2.0:
     resolution: {integrity: sha512-94hK0Hh8rPqQl2xXc3HsaBoOXKV20MToPkcXvwbISWLEs+64sBq5kFgn2kJDHb1Pry9yrP0dxrCI9RRci7RXKg==}

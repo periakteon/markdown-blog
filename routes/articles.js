@@ -1,6 +1,5 @@
 const express = require("express");
 const Article = require("../models/articleModel");
-const mongoose = require("mongoose");
 const router = express.Router();
 
 // "/articles" istekleri, yani bir nevi articles'ın anasayfası
@@ -8,16 +7,18 @@ router.get("/new", (req, res) => {
   res.render("articles/new");
 });
 
-router.get("/:id", async (req, res) => {
-  //eğer girilen parametre mevcut değilse veya veritabanında yoksa
-  if (!req.params.id || !mongoose.isValidObjectId(req.params.id)) {
+router.get("/:slug", async (req, res) => {
+  const article = await Article.findOne({ slug: req.params.slug });
+
+  // eğer slug parametresi yoksa veya bu slug'a sahip bir yazı yoksa
+  if (!req.params.slug || !article) {
     res.redirect("/");
-    console.log("Hatalı id");
+    console.log("Hatalı slug.");
     return;
   }
-  try {
-    const article = await Article.findById(req.params.id);
 
+  try {
+    // eğer yazı varsa
     // show.ejs'te kullanmak üzere "article" değişkenini ikinci parametre olarak girip show.ejs'e gönderiyoruz
     res.render("articles/show", { article: article });
   } catch (err) {
@@ -35,11 +36,18 @@ router.post("/", async (req, res) => {
   });
   try {
     article = await article.save();
-    res.redirect(`/articles/${article.id}`);
-    console.log(`Yazı ekleme başarılı. ${article.id}'ye yönlendiriliyorsunuz.`);
-  } catch (err) {
-    console.log(err);
-    res.render("articles/new");
+    res.redirect(`/articles/${article.slug}`);
+    console.log(
+      `Yazı ekleme başarılı. ${article.slug}'ye yönlendiriliyorsunuz.`
+    );
+  } catch (error) {
+    if (error.code === 11000 && error.keyPattern && error.keyPattern.slug) {
+      // Send a 400 Bad Request status code and the duplicate key error message to the client
+      res.status(400).send({ error: 'A post with this title already exists.' });
+    } else {
+      // For other errors, send a 500 Internal Server Error status code and the error message to the client
+      res.status(500).send({ error: error.message });
+    }
   }
 });
 
