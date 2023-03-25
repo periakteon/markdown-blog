@@ -8,9 +8,17 @@ const PORT = process.env.PORT || 3001;
 const articleRouter = require("./routes/articles");
 const app = express();
 
-// veritabanı bağlantısı için asenkron fonksiyon oluşturuyoruz.
-// önce veritabanı bağlantısının sağlanması için connectDb() fonksiyonunu await ediyoruz
-// await edilen fonksiyon çözüldüğünde, yani Promise resolve olduğunda port dinlemeyi başlatıyoruz
+/* 
+EJS modülü template dosyaları görebilmek için varsayılan olarak views klasörünün içerisindeki
+.ejs uzantılı dosyalara bakar.
+
+view engine ile ejs kodlarını HTML'e çeviririz, daha dinamik sayfalar için
+*/
+app.set("view engine", "ejs");
+
+//  veritabanı bağlantısı için asenkron fonksiyon oluşturuyoruz.
+//  önce veritabanı bağlantısının sağlanması için connectDb() fonksiyonunu await ediyoruz
+//  await edilen fonksiyon çözüldüğünde, yani Promise resolve olduğunda port dinlemeyi başlatıyoruz
 const startApp = async () => {
   try {
     await connectDb();
@@ -23,18 +31,6 @@ const startApp = async () => {
 };
 
 startApp();
-
-/* 
-EJS modülü template dosyaları görebilmek için varsayılan olarak views klasörünün içerisindeki
-.ejs uzantılı dosyalara bakar.
-
-view engine ile ejs kodlarını HTML'e çeviririz, daha dinamik sayfalar için
-*/
-app.set("view engine", "ejs");
-
-// "/articles"a gelen her şeyi articles.js router'ı üzerinden kontrol edeceğiz
-// yani diyoruz ki: "/articles"a gelen her şeyi al, sonrasında işi articleRouter'a bırak
-app.use("/articles", articleRouter);
 
 /*
 
@@ -62,5 +58,10 @@ app.get("/", (req, res) => {
     },
   ];
   // anasayfamızı articles view'inin içerisindeki index.ejs olarak belirledik
+  // tüm yazıları almak için forEach kullanacağız, bu nedenle yukarıdaki articles dizisini "articles" olarak aktarıyoruz: ejs ile kullanmak için
   res.render("articles/index", { articles: articles });
 });
+
+// "/articles"a gelen her şeyi articles.js router'ı üzerinden kontrol edeceğiz
+// yani diyoruz ki: "/articles"a gelen her şeyi al, sonrasında işi articleRouter'a bırak
+app.use("/articles", articleRouter);
