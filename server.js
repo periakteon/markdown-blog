@@ -36,6 +36,6 @@ app.get("/", (req, res) => {
       description: "test description 2",
     },
   ];
-  // "index.ejs" içerisindeki "<%= articles %>" nesnesini "articles" değişkeni olarak belirledik
-  res.render("index", { articles: articles });
+  // anasayfamızı articles view'inin içerisindeki index.ejs olarak belirledik
+  res.render("articles/index", { articles: articles });
 });
