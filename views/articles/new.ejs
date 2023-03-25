@@ -16,7 +16,10 @@
     <div class="container">
       <h1 class="mb-4">New Article</h1>
       <!-- ....com/articles adresine bir POST gönderiyoruz, bunun için router düzenlemesi yapmalıyız -->
-      <form action="/articles" method="POST"></form>
+      <form action="/articles" method="POST">
+        <!-- her seferinde her yere aynı form kodlarını yazmak yerine _form_fields şeklindeki biçimi import ediyoruz-->
+        <%- include("_form_fields"); %>
+      </form>
     </div>
   </body>
 </html>
