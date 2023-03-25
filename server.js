@@ -5,7 +5,7 @@ const dotenv = require("dotenv");
 const connectDb = require("./config/dbConnection");
 const PORT = process.env.PORT || 3001;
 const Article = require("./models/articleModel");
-const articleRouter = require("./routes/articles");
+const articlesRouter = require("./routes/articlesRouter");
 const app = express();
 
 dotenv.config();
@@ -31,12 +31,12 @@ app.use(express.urlencoded({ extended: false }));
 app.get("/", async (req, res) => {
   //veritabanından tüm yazıları bulup, en yeni olanlar en üstte görünecek şekilde alıyoruz
   const articles = await Article.find().sort({createdAt: "descending"});
-  
+
   // anasayfamızı articles view'inin içerisindeki index.ejs olarak belirledik
   // tüm yazıları almak için forEach kullanacağız, bu nedenle yukarıdaki articles dizisini "articles" olarak aktarıyoruz: ejs ile kullanmak için
   res.render("articles/index", { articles: articles });
 });
 
 // "/articles"a gelen her şeyi articles.js router'ı üzerinden kontrol edeceğiz
-// yani diyoruz ki: "/articles"a gelen her şeyi al, sonrasında işi articleRouter'a bırak
-app.use("/articles", articleRouter);
+// yani diyoruz ki: "/articles"a gelen her şeyi al, sonrasında işi articlesRouter'a bırak
+app.use("/articles", articlesRouter);
